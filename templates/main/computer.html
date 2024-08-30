@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Computers
+{% endblock %}
+
+{% block content %}
+    <h1>All Computers</h1>
+    {% for computer in computers %}
+        <p>{{ computer.id }}</p>
+        <p>{{ computer.invention_id }}</p>
+        <p>{{ computer.type }}</p>
+        <p>{{ computer.years }}</p>
+        <p>{{ computer.is_active }}</p>
+    {% empty %}
+        <p>List empty</p>
+    {% endfor %}
+
+{% endblock %}
+

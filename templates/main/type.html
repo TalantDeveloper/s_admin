@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Computer - Types
+{% endblock %}
+
+{% block content %}
+    {% for type in types %}
+        <p>{{ type.id }}</p>
+        <p>{{ type.name }}</p>
+        <img src="{{ type.image.url }}" alt="">
+    {% empty %}
+        <p>List empty</p>
+    {% endfor %}
+
+{% endblock %}
+
+

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Employee 
+{% endblock %}
+
+{% block content %}
+    <h1>Employee computers</h1>
+    {% for employee in employees %}
+    	<p>{{ forloop.counter }}</p>
+        <p>{{ employee.full_name }}</p>
+        <p>{{ employee.department }}</p>
+        <p>{{ employee.computer }}</p>
+        
+        {% empty %}
+        <p>List empty</p>
+    {% endfor %}
+    
+{% endblock %}
