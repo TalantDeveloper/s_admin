@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% load static %}
+
 {% block title %}
-    Computers
+
 {% endblock %}
 
 {% block content %}
@@ -34,7 +34,7 @@
                 kompyuter
             </div>
             <div class="card-body card-block">
-                <form action="{% url 'main:create_computer' %}" method="post" class="form-inline"
+                <form action="{% url 'main:update_computer' computer.id %}" method="post" class="form-inline"
                       enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group col-lg-3">
@@ -42,14 +42,14 @@
                             Invention ID:
                         </label>
                         <input type="text" id="exampleInputName2" placeholder="01306009836" required
-                               class="form-control" name="invention_id">
+                               class="form-control" name="invention_id" value="{{ computer.invention_id }}">
                     </div>
                     <div class="form-group col-lg-2">
                         <label for="exampleInputName2" class="pr-1  form-control-label">
                             Ishlab chiqilgan:
                         </label>
-                        <input type="date" id="exampleInputName2" placeholder="01306009836" required
-                               class="form-control" name="years">
+                        <input type="text" id="exampleInputName2" disabled
+                               class="form-control" name="years" value="{{ computer.years|date:"m/d/Y" }}">
                     </div>
                     <div class="form-group col-lg-2">
                         <div class="col col-md-3">
@@ -57,7 +57,7 @@
                         </div>
                         <div class="col-12 col-md-9">
                             <select name="type" id="select" class="form-control">
-                                <option value="0">tanlang...</option>
+                                <option value="{{ computer.type.id }}">{{ computer.type }}</option>
                                 {% for type in types %}
                                     <option value="{{ type.id }}">{{ type.name }}</option>
                                 {% endfor %}
@@ -67,14 +67,26 @@
                     <div class="form-group col-lg-2">
                         <div class="col col-md-9">
                             <div class="form-check-inline form-check">
-                                <label for="inline-radio1" class="form-check-label mr-3">
-                                    <input type="radio" id="inline-radio1" name="is_active" value="True"
-                                           class="form-check-input">Ishlaydi
-                                </label>
-                                <label for="inline-radio2" class="form-check-label">
-                                    <input type="radio" id="inline-radio2" name="is_active" value="False"
-                                           class="form-check-input">Ishlamaydi
-                                </label>
+                                {% if computer.is_active %}
+                                    <label for="inline-radio1" class="form-check-label ">
+                                        <input type="radio" id="inline-radio1" name="is_active" value="True"
+                                               class="form-check-input" checked>Ishlaydi
+                                    </label>
+                                    <label for="inline-radio2" class="form-check-label ">
+                                        <input type="radio" id="inline-radio2" name="is_active" value="False"
+                                               class="form-check-input">Ishlamaydi
+                                    </label>
+                                {% else %}
+                                    <label for="inline-radio1" class="form-check-label ">
+                                        <input type="radio" id="inline-radio1" name="is_active" value="True"
+                                               class="form-check-input">Ishlaydi
+                                    </label>
+                                    <label for="inline-radio2" class="form-check-label ">
+                                        <input type="radio" id="inline-radio2" name="is_active" value="False"
+                                               class="form-check-input" checked>Ishlamaydi
+                                    </label>
+                                {% endif %}
+
                             </div>
                         </div>
                     </div>
@@ -131,10 +143,13 @@
                                             {{ computer.years|date:"d-m-Y" }}
                                         </td>
                                         <td>
-                                            <a href="{% url 'main:delete_computer' computer.id %}" class="btn btn-outline-danger">
+                                            <a href="{% url 'main:delete_computer' computer.id %}"
+                                               class="btn btn-outline-danger">
                                                 O'chirish
                                             </a>
-                                            <a href="{% url 'main:update_computer' computer.id %}" class="btn btn-outline-primary">O'zgartirish</a>
+                                            <a href="{% url 'main:update_computer' computer.id %}" class="btn btn-outline-primary">
+                                                O'zgartirish
+                                            </a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -148,6 +163,4 @@
             </div>
         </div><!-- .animated -->
     </div><!-- .content -->
-
 {% endblock %}
-
