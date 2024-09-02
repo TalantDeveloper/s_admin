@@ -17,3 +17,16 @@ def computer_get(request):
     except ValueError:
         computer = None
     return computer
+
+
+def computer_update(request, pk):
+    invention_id = request.POST.get('invention_id')
+    pc_type = Type.objects.get(pk=int(request.POST.get('type')))
+    is_active = True if request.POST.get('is_active') == 'True' else False
+    computer = Computer.objects.get(pk=pk)
+    computer.invention_id = invention_id
+    computer.type = pc_type
+    computer.is_active = is_active
+    computer.save()
+    return computer
+

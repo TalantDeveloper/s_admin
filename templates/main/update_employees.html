@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+
+{% endblock %}
+
+{% block content %}
+    <div class="col-lg-6 mt-3">
+        <div class="card">
+            <div class="card-header">
+                <strong>Xodim</strong> qo'shish
+            </div>
+            <div class="card-body card-block">
+                <form action="{% url 'main:update-employee-easy' employee.id %}" method="post"
+                      enctype="multipart/form-data" class="form-horizontal">
+                    {% csrf_token %}
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="text-input" class="form-control-label">
+                                F.I.O.
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="text-input" name="full_name" value="{{ employee.full_name }}"
+                                   placeholder="F.I.O." class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="select" class=" form-control-label">
+                                Bo'limi
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select name="department" id="select" class="form-control">
+                                <option value="{{ employee.department.id }}">{{ employee.department }}</option>
+                                {% for department in departments %}
+                                    <option value="{{ department.id }}">
+                                        {{ department.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="select" class=" form-control-label">
+                                Kompyuter
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select name="computer" id="select" class="form-control">
+                                <option value="{{ employee.computer.id }}">{{ employee.computer }}</option>
+                                {% for computer in computers %}
+                                    <option value="{{ computer.id }}">
+                                        {{ computer }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <button type="submit" class="col-lg-3 btn btn-success btn-group-md">
+                        <i class="fa fa-dot-circle-o"></i>
+                        Saqlash
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-6 mt-3">
+        <div class="card">
+            <div class="card-header">
+                <strong>Xodim va kompyuter</strong> qo'shish
+            </div>
+            <div class="card-body card-block">
+                <form action="{% url 'main:update-employee-full' employee.id %}" method="post" enctype="multipart/form-data"
+                      class="form-horizontal">
+                    {% csrf_token %}
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="text-input" class="form-control-label">
+                                F.I.O.
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="text-input" name="full_name" value="{{ employee.full_name }}"
+                                   placeholder="F.I.O." class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="select" class=" form-control-label">
+                                Bo'limi
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select name="department" id="select" class="form-control">
+                                <option value="{{ employee.department.id }}">
+                                    {{ employee.department }}
+                                </option>
+                                {% for department in departments %}
+                                    <option value="{{ department.id }}">
+                                        {{ department.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="loc col-md-3">
+                            <label for="exampleInputName2" class="form-control-label">
+                                Invention ID:
+                            </label>
+                        </div>
+                        <div class="col col-md-9">
+                            <input type="text" id="exampleInputName2" placeholder="01306009836" required
+                                   class="form-control" name="invention_id"
+                                   value="{{ employee.computer.invention_id }}">
+                        </div>
+
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="exampleInputName2" class="form-control-label">
+                                Ishlab chiqilgan:
+                            </label>
+                        </div>
+                        <div class="col col-md-9">
+                            <input type="text" id="exampleInputName2" placeholder="01306009836" required
+                                   class="form-control" name="years" value="{{ employee.computer.years|date:'Y-m-d' }}">
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="select" class=" form-control-label">
+                                Turi:
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select name="type" id="select" class="form-control">
+                                <option value="{{ employee.computer.type.id }}">
+                                    {{ employee.computer.type }}
+                                </option>
+                                {% for type in types %}
+                                    <option value="{{ type.id }}">{{ type.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="is_active" class=" form-control-label">
+                                Holati:
+                            </label>
+                        </div>
+                        <div class="col col-md-9">
+                            <div class="form-check-inline form-check">
+                                {% if employee.computer.is_active %}
+                                    <label for="inline-radio1" class="form-check-label mr-3">
+                                        <input type="radio" id="inline-radio1" name="is_active" value="True"
+                                               class="form-check-input" checked>
+                                        Ishlaydi
+                                    </label>
+                                    <label for="inline-radio2" class="form-check-label ">
+                                        <input type="radio" id="inline-radio2" name="is_active" value="False"
+                                               class="form-check-input">
+                                        Ishlamaydi
+                                    </label>
+                                {% else %}
+                                    <label for="inline-radio1" class="form-check-label mr-3">
+                                        <input type="radio" id="inline-radio1" name="is_active" value="True"
+                                               class="form-check-input">
+                                        Ishlaydi
+                                    </label>
+                                    <label for="inline-radio2" class="form-check-label ">
+                                        <input type="radio" id="inline-radio2" name="is_active" value="False"
+                                               class="form-check-input" checked>
+                                        Ishlamaydi
+                                    </label>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="col-lg-3 btn btn-success btn-group-md">
+                        <i class="fa fa-dot-circle-o"></i>
+                        Saqlash
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}

@@ -22,5 +22,11 @@ urlpatterns = [
     path('employees/create/', views.create_employee, name='create_employee'),
     path('employees/create/cp/', views.create_employee_view, name='create-employee'),
     path('employees/<int:pk>/delete/', views.delete_employee, name='delete-employee'),
+    path('employees/<int:pk>/update/', views.update_employee, name='update-employee'),
+    path('employees/<int:pk>/update/easy/', views.update_employee_easy, name='update-employee-easy'),
+    path('employees/<int:pk>/update/full/', views.update_employee_full, name='update-employee-full'),
+
+
+    path('full/', views.report_full, name='report_full'),
 
 ]

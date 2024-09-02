@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Type, Computer, Department, Employee
-from .function import department_get, computer_get
+from .function import department_get, computer_get, computer_update
 
 
 def welcome(request):
@@ -46,14 +46,7 @@ def create_computer(request):
 
 def update_computer(request, pk):
     if request.method == "POST":
-        invention_id = request.POST.get('invention_id')
-        pc_type = Type.objects.get(pk=int(request.POST.get('type')))
-        is_active = True if request.POST.get('is_active') == 'True' else False
-        computer = Computer.objects.get(pk=pk)
-        computer.invention_id = invention_id
-        computer.type = pc_type
-        computer.is_active = is_active
-        computer.save()
+        computer = computer_update(request, pk)
         return redirect('main:computers')
     computer = Computer.objects.get(pk=pk)
     types = Type.objects.all()
@@ -209,3 +202,47 @@ def delete_employee(request, pk):
     employee = Employee.objects.get(pk=pk)
     employee.delete()
     return redirect('main:employees')
+
+
+def update_employee(request, pk):
+    employee = Employee.objects.get(pk=pk)
+    types = Type.objects.all()
+    departments = Department.objects.all()
+    computers = Computer.objects.all()
+    context = {
+        'employee': employee,
+        'types': types,
+        'departments': departments,
+        'computers': computers
+
+    }
+    return render(request, 'main/update_employees.html', context)
+
+
+def update_employee_easy(request, pk):
+    if request.method == "POST":
+        employee = Employee.objects.get(pk=pk)
+        department = department_get(request)
+        computer = computer_get(request)
+        employee.full_name = request.POST.get('full_name')
+        employee.department = department
+        employee.computer = computer
+        employee.save()
+        return redirect('main:employees')
+
+
+def update_employee_full(request, pk):
+    if request.method == "POST":
+        employee = Employee.objects.get(pk=pk)
+        employee.full_name = request.POST.get('full_name')
+        employee.department = department_get(request)
+        employee.computer = computer_update(request, employee.computer.id)
+        employee.save()
+        return redirect('main:employees')
+
+
+def report_full(request):
+    employees = Employee.objects.all()
+    context = {'employees': employees}
+    return render(request, 'xisobot/full.html', context)
+

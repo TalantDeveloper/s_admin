@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    <link rel="stylesheet" href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/themify-icons/css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/flag-icon-css/css/flag-icon.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/selectFX/css/cs-skin-elastic.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/jqvmap/dist/jqvmap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}">
+
+
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div class="content mt-3">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-md-12" id="table-conatainer">
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title">Xodimlar</strong>
+                    </div>
+                    <div class="card-body" id="table">
+                        <table id="" class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>F.I.O.</th>
+                                <th>Bo'limi</th>
+                                <th>Invention ID</th>
+                                <th>Kompyuter</th>
+                                <th>Holati</th>
+                                <th>Kompyuter sana</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for employee in employees %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ employee.full_name }}</td>
+                                    {% if employee.department %}
+                                        <td>{{ employee.department }}</td>
+                                    {% else %}
+                                        <td> ----</td>
+                                    {% endif %}
+
+
+                                    {% if employee.computer %}
+                                        <td>
+                                            <div class="">
+                                                {{ employee.computer.invention_id }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="">
+                                                {{ employee.computer.type }}
+                                                <img class="" src="{{ employee.computer.type.image.url }}"
+                                                     height="40"
+                                                     alt="Card image cap">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% if employee.computer.is_active %}
+                                                <p class="text-success">Ishlaydi</p>
+                                            {% else %}
+                                                <p class="text-danger">Ishlamaydi</p>
+                                            {% endif %}
+                                        </td>
+                                    {% else %}
+                                        <td>
+                                            ---
+                                        </td>
+                                        <td>
+                                            ---
+                                        </td>
+                                        <td>
+                                            ---
+                                        </td>
+                                    {% endif %}
+                                    <td>
+                                        {{ employee.computer.years|date:"Y-m-d" }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- .animated -->
+</div><!-- .content -->
+
+</body>
+</html>
