@@ -1,9 +1,14 @@
 from django.urls import path
-from . import views
+from main.views import views
+
+from main.views.user_views import *
 
 app_name = 'main'
 
 urlpatterns = [
+
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
     path('', views.welcome, name='welcome'),
     path('types/', views.get_types, name='types'),
     path('types/<int:pk>/delete/', views.delete_type, name='delete_type'),

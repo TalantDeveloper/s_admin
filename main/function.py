@@ -1,4 +1,19 @@
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect
+
 from .models import Type, Computer, Department, Employee
+
+
+def login_function(request):
+
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return redirect('main:welcome')
+    else:
+        return redirect('main:login')
 
 
 def department_get(request):
@@ -30,3 +45,16 @@ def computer_update(request, pk):
     computer.save()
     return computer
 
+
+def content_get(request):
+    types = Type.objects.all()
+    departments = Department.objects.all()
+    computers = Computer.objects.all()
+    employees = Employee.objects.all()
+    context = {
+        'types': types,
+        'departments': departments,
+        'computers': computers,
+        'employees': employees
+
+    }

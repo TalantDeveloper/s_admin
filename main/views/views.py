@@ -1,12 +1,16 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Type, Computer, Department, Employee
-from .function import department_get, computer_get, computer_update
+from django.shortcuts import render, redirect
+from main.models import Type, Computer, Department, Employee
+from main.function import department_get, computer_get, computer_update, content_get
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url='main:login')
 def welcome(request):
-    return render(request, 'main/welcome.html')
+    context = content_get(request)
+    return render(request, 'main/welcome.html', context)
 
 
+@login_required(login_url='main:login')
 def get_types(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -20,12 +24,14 @@ def get_types(request):
     return render(request, 'main/type.html', context)
 
 
+@login_required(login_url='main:login')
 def delete_type(request, pk):
     pc_type = Type.objects.get(pk=pk)
     pc_type.delete()
     return redirect('main:types')
 
 
+@login_required(login_url='main:login')
 def get_computers(request):
     computers = Computer.objects.all()
     types = Type.objects.all()
@@ -33,6 +39,7 @@ def get_computers(request):
     return render(request, 'main/computer.html', context)
 
 
+@login_required(login_url='main:login')
 def create_computer(request):
     if request.method == 'POST':
         invention_id = request.POST.get('invention_id')
@@ -44,6 +51,7 @@ def create_computer(request):
         return redirect('main:computers')
 
 
+@login_required(login_url='main:login')
 def update_computer(request, pk):
     if request.method == "POST":
         computer = computer_update(request, pk)
@@ -59,12 +67,14 @@ def update_computer(request, pk):
     return render(request, 'main/update_computer.html', context)
 
 
+@login_required(login_url='main:login')
 def delete_computer(request, pk):
     computer = Computer.objects.get(pk=pk)
     computer.delete()
     return redirect('main:computers')
 
 
+@login_required(login_url='main:login')
 def get_departments(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -77,12 +87,14 @@ def get_departments(request):
     return render(request, 'main/departments.html', context)
 
 
+@login_required(login_url='main:login')
 def delete_department(request, pk):
     department = Department.objects.get(pk=pk)
     department.delete()
     return redirect('main:departments')
 
 
+@login_required(login_url='main:login')
 def update_department(request, pk):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -99,6 +111,7 @@ def update_department(request, pk):
     return render(request, 'main/update_department.html', context)
 
 
+@login_required(login_url='main:login')
 def get_employees(request):
     employees = Employee.objects.all()
     types = Type.objects.all()
@@ -109,6 +122,7 @@ def get_employees(request):
     return render(request, 'main/employees.html', context)
 
 
+@login_required(login_url='main:login')
 def get_employee_by_depart(request):
     types = Type.objects.all()
     departments = Department.objects.all()
@@ -124,6 +138,7 @@ def get_employee_by_depart(request):
         return render(request, 'main/employees.html', context)
 
 
+@login_required(login_url='main:login')
 def get_employee_by_type(request):
     types = Type.objects.all()
     departments = Department.objects.all()
@@ -138,6 +153,7 @@ def get_employee_by_type(request):
         return render(request, 'main/employees.html', context)
 
 
+@login_required(login_url='main:login')
 def get_employee_by_status(request):
     if request.method == 'POST':
         is_active = True if request.POST.get('is_active') == 'True' else False
@@ -154,6 +170,7 @@ def get_employee_by_status(request):
     return render(request, 'main/employees.html', context)
 
 
+@login_required(login_url='main:login')
 def create_employee(request):
     if request.method == "POST":
         full_name = request.POST.get('full_name')
@@ -175,6 +192,7 @@ def create_employee(request):
     return render(request, 'main/create_employee.html', context)
 
 
+@login_required(login_url='main:login')
 def create_employee_view(request):
     if request.method == "POST":
         full_name = request.POST.get('full_name')
@@ -198,12 +216,14 @@ def create_employee_view(request):
     return render(request, 'main/create_employee.html', context)
 
 
+@login_required(login_url='main:login')
 def delete_employee(request, pk):
     employee = Employee.objects.get(pk=pk)
     employee.delete()
     return redirect('main:employees')
 
 
+@login_required(login_url='main:login')
 def update_employee(request, pk):
     employee = Employee.objects.get(pk=pk)
     types = Type.objects.all()
@@ -219,6 +239,7 @@ def update_employee(request, pk):
     return render(request, 'main/update_employees.html', context)
 
 
+@login_required(login_url='main:login')
 def update_employee_easy(request, pk):
     if request.method == "POST":
         employee = Employee.objects.get(pk=pk)
@@ -231,6 +252,7 @@ def update_employee_easy(request, pk):
         return redirect('main:employees')
 
 
+@login_required(login_url='main:login')
 def update_employee_full(request, pk):
     if request.method == "POST":
         employee = Employee.objects.get(pk=pk)
@@ -241,6 +263,7 @@ def update_employee_full(request, pk):
         return redirect('main:employees')
 
 
+@login_required(login_url='main:login')
 def report_full(request):
     employees = Employee.objects.all()
     context = {'employees': employees}
