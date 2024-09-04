@@ -104,6 +104,47 @@
                     </a>
                 </li>
 
+                <li class="menu-item-has-children active dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Bo'limlar bo'yicha xisobot</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        {% for department in departments %}
+                            <li>
+                                <a href="{% url 'main:report_by_department' department.id %}">
+                                    {{ department }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li class="menu-item-has-children active dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>pc bo'yicha xisobot</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        {% for type in types %}
+                            <li>
+                                <a href="{% url 'main:report_by_department' type.id %}">
+                                    {{ type }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li class="menu-item-has-children active dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>pc holati bo'yicha</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li>
+                            <a href="{% url 'main:report_active_computer' %}">
+                                Ishlaydigan pc
+                            </a>
+                            <a href="{% url 'main:report_deactivate_computer' %}">
+                                Ishlamaydigan pc
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
 
             </ul>
         </div><!-- /.navbar-collapse -->

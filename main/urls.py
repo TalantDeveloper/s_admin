@@ -33,5 +33,9 @@ urlpatterns = [
 
 
     path('full/', views.report_full, name='report_full'),
+    path('by_department/<int:pk>/', views.report_by_department, name='report_by_department'),
+
+    path('by_active/', views.report_active_computer, name='report_active_computer'),
+    path('by_deactive/', views.report_deactivate_computer, name='report_deactivate_computer'),
 
 ]

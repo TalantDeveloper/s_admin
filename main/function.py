@@ -53,8 +53,13 @@ def content_get(request):
     employees = Employee.objects.all()
     context = {
         'types': types,
+        'types_length': len(types),
         'departments': departments,
+        'departments_length': len(departments),
         'computers': computers,
-        'employees': employees
+        'computers_length': len(computers),
+        'employees': employees,
+        'employees_length': len(employees),
 
     }
+    return context

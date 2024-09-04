@@ -19,8 +19,7 @@ def get_types(request):
         pc_type.save()
         return redirect('main:types')
 
-    types = Type.objects.all()
-    context = {'types': types}
+    context = content_get(request)
     return render(request, 'main/type.html', context)
 
 
@@ -33,9 +32,7 @@ def delete_type(request, pk):
 
 @login_required(login_url='main:login')
 def get_computers(request):
-    computers = Computer.objects.all()
-    types = Type.objects.all()
-    context = {'computers': computers, 'types': types}
+    context = content_get(request)
     return render(request, 'main/computer.html', context)
 
 
@@ -57,13 +54,8 @@ def update_computer(request, pk):
         computer = computer_update(request, pk)
         return redirect('main:computers')
     computer = Computer.objects.get(pk=pk)
-    types = Type.objects.all()
-    computers = Computer.objects.all()
-    context = {
-        'computer': computer,
-        'types': types,
-        'computers': computers
-    }
+    context = content_get(request)
+    context['computer'] = computer
     return render(request, 'main/update_computer.html', context)
 
 
@@ -82,8 +74,7 @@ def get_departments(request):
         department.save()
         return redirect('main:departments')
 
-    departments = Department.objects.all()
-    context = {'departments': departments}
+    context = content_get(request)
     return render(request, 'main/departments.html', context)
 
 
@@ -103,22 +94,14 @@ def update_department(request, pk):
         department.save()
         return redirect("main:departments")
     department = Department.objects.get(pk=pk)
-    departments = Department.objects.all()
-    context = {
-        'department': department,
-        'departments': departments
-    }
+    context = content_get(request)
+    context['department'] = department
     return render(request, 'main/update_department.html', context)
 
 
 @login_required(login_url='main:login')
 def get_employees(request):
-    employees = Employee.objects.all()
-    types = Type.objects.all()
-    computers = Computer.objects.all()
-    departments = Department.objects.all()
-    context = {'employees': employees, 'types': types, 'computers': computers,
-               'departments': departments}
+    context = content_get(request)
     return render(request, 'main/employees.html', context)
 
 
@@ -132,7 +115,8 @@ def get_employee_by_depart(request):
         context = {
             'types': types,
             'departments': departments,
-            'employees': employees
+            'employees': employees,
+            'computers': Computer.objects.all()
         }
 
         return render(request, 'main/employees.html', context)
@@ -148,7 +132,8 @@ def get_employee_by_type(request):
         context = {
             'types': types,
             'departments': departments,
-            'employees': employees
+            'employees': employees,
+            'computers': Computer.objects.all()
         }
         return render(request, 'main/employees.html', context)
 
@@ -165,7 +150,8 @@ def get_employee_by_status(request):
     context = {
         'types': types,
         'departments': departments,
-        'employees': employees
+        'employees': employees,
+        'computers': Computer.objects.all()
     }
     return render(request, 'main/employees.html', context)
 
@@ -179,16 +165,7 @@ def create_employee(request):
         employee = Employee.objects.create(full_name=full_name, department=department, computer=computer)
         employee.save()
         return redirect('main:create_employee')
-    types = Type.objects.all()
-    departments = Department.objects.all()
-    computers = Computer.objects.all()
-
-    context = {
-        'types': types,
-        'departments': departments,
-        'computers': computers
-    }
-
+    context = content_get(request)
     return render(request, 'main/create_employee.html', context)
 
 
@@ -205,14 +182,7 @@ def create_employee_view(request):
         computer.save()
         employee = Employee.objects.create(full_name=full_name, department=department, computer=computer)
         return redirect('main:create_employee')
-    types = Type.objects.all()
-    departments = Department.objects.all()
-    computers = Computer.objects.all()
-    context = {
-        'types': types,
-        'departments': departments,
-        'computers': computers
-    }
+    context = content_get(request)
     return render(request, 'main/create_employee.html', context)
 
 
@@ -226,16 +196,8 @@ def delete_employee(request, pk):
 @login_required(login_url='main:login')
 def update_employee(request, pk):
     employee = Employee.objects.get(pk=pk)
-    types = Type.objects.all()
-    departments = Department.objects.all()
-    computers = Computer.objects.all()
-    context = {
-        'employee': employee,
-        'types': types,
-        'departments': departments,
-        'computers': computers
-
-    }
+    context = content_get(request)
+    context['employee'] = employee
     return render(request, 'main/update_employees.html', context)
 
 
@@ -269,3 +231,32 @@ def report_full(request):
     context = {'employees': employees}
     return render(request, 'xisobot/full.html', context)
 
+
+@login_required(login_url='main:login')
+def report_by_department(request, pk):
+    department = Department.objects.get(pk=pk)
+    employees = Employee.objects.filter(department=department)
+    context = {'employees': employees, 'department': department}
+    return render(request, 'xisobot/by_department.html', context)
+
+
+@login_required(login_url='main:login')
+def report_by_type(request, pk):
+    pc_type = Type.objects.get(pk=pk)
+    employees = Employee.objects.filter(computer__type=pc_type)
+    context = {'employees': employees, 'type': pc_type}
+    return render(request, 'xisobot/by_type.html', context)
+
+
+@login_required(login_url='main:login')
+def report_active_computer(request):
+    computers = Computer.objects.filter(is_active=True)
+    context = {'computers': computers}
+    return render(request, 'xisobot/active_pc.html', context)
+
+
+@login_required(login_url='main:login')
+def report_deactivate_computer(request):
+    computers = Computer.objects.filter(is_active=False)
+    context = {'computers': computers}
+    return render(request, 'xisobot/deactive_pc.html', context)
